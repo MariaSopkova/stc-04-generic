@@ -5,92 +5,102 @@ import ru.innopolis.stc.box.ObjectBox;
 import ru.innopolis.stc.exceptions.NotNumberException;
 
 public class ObjectBoxTest {
-    public static void AddAndDeleteObjects() {
-        ObjectBox objectBox = new ObjectBox();
-        objectBox.addObject("String");
-        objectBox.addObject("Masha");
+
+    protected ObjectBox objectBox;
+
+    public ObjectBoxTest() {
+        objectBox = new ObjectBox();
+    }
+
+    private void addIntegers() {
         objectBox.addObject(13);
-        objectBox.addObject(42);
-        objectBox.addObject(42);
-        objectBox.addObject(33.5);
-        System.out.println("After init:");
-        System.out.println(objectBox.dump());
-        System.out.println("////////////");
-        System.out.println(objectBox.deleteObject(42));
-        System.out.println(objectBox.deleteObject(43));
-        System.out.println(objectBox.deleteObject(33.5));
-        System.out.println("////////////");
-        System.out.println("After delete:");
-        System.out.println(objectBox.dump());
+        objectBox.addObject(1);
+        objectBox.addObject(27);
     }
 
-    public static void summatorException() {
-        System.out.println("Summator exception test");
-        ObjectBox objectBox = new ObjectBox();
+    private void addDoubles() {
+        objectBox.addObject(2.5);
+        objectBox.addObject(11.8);
+        objectBox.addObject(-2.5);
+    }
+
+    private void addStrings() {
+        objectBox.addObject("Masha");
         objectBox.addObject("String");
-        objectBox.addObject("Masha");
-        objectBox.addObject(13);
-        objectBox.addObject(42);
-        objectBox.addObject(42);
-        objectBox.addObject(33.5);
+        objectBox.addObject("Hello world");
+    }
+
+    private void deleteStrings() {
+        objectBox.deleteObject("Masha");
+        objectBox.deleteObject("String");
+        objectBox.deleteObject("Hello world");
+    }
+
+    public void deleteObjects() {
+        addDoubles();
+        addIntegers();
+        addStrings();
+        PrintTestBeginning("Delete objects");
+        objectBox.deleteObject(1);
+        objectBox.deleteObject(2);
+        objectBox.deleteObject(11.8);
+        objectBox.deleteObject(-2.11);
+        objectBox.deleteObject("111");
+        deleteStrings();
+        PrintTestEnd();
+    }
+
+    public void PrintTestBeginning(String testName) {
+        System.out.println("//////////////////");
+        System.out.println(testName);
         System.out.println("After init:");
         System.out.println(objectBox.dump());
-        System.out.println("////////////");
+    }
+
+    public void PrintTestEnd() {
+        System.out.println("After function:");
+        System.out.println(objectBox.dump());
+        System.out.println("//////////////////");
+    }
+
+    public void summator(boolean isException) {
+        if (isException) {
+            PrintTestBeginning("SummatorTestException");
+        } else {
+            PrintTestBeginning("SummatorTest");
+        }
         try {
-            System.out.println(objectBox.summator());
+            System.out.println("Result: " + objectBox.summator());
         } catch (NotNumberException ex) {
             System.out.println(ex.getMessage());
+        } finally {
+            PrintTestEnd();
         }
     }
 
-    public static void summator() {
-        System.out.println("Summator test");
-        ObjectBox objectBox = new ObjectBox();
-        objectBox.addObject(10.5);
-        objectBox.addObject(1);
-        objectBox.addObject(2);
-        System.out.println("After init:");
-        System.out.println(objectBox.dump());
-        System.out.println("////////////");
+    public void splitter(boolean isException) {
+        if (isException) {
+            PrintTestBeginning("SplitterTestException");
+        } else {
+            PrintTestBeginning("SplitterTest");
+        }
         try {
-            System.out.println(objectBox.summator());
+            System.out.println("Result with 2: " + objectBox.splitter(2));
+            System.out.println("Result with 0.5: " + objectBox.splitter(0.5));
         } catch (NotNumberException ex) {
             System.out.println(ex.getMessage());
+        } finally {
+            PrintTestEnd();
         }
     }
 
-    public static void splitter() {
-        System.out.println("Splitter test");
-        ObjectBox objectBox = new ObjectBox();
-        objectBox.addObject(10.5);
-        objectBox.addObject(1);
-        objectBox.addObject(2);
-        System.out.println("After init:");
-        System.out.println(objectBox.dump());
-        System.out.println("////////////");
-        try {
-            System.out.println(objectBox.splitter(new Integer(2)).toString());
-            System.out.println(objectBox.splitter(new Double(0.5)).toString());
-        } catch (NotNumberException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
+    public void allTests() {
+        deleteObjects();
+        summator(false);
+        splitter(false);
+        addStrings();
+        summator(true);
+        splitter(true);
 
-    public static void splitterExeption() {
-        System.out.println("Splitter test");
-        ObjectBox objectBox = new ObjectBox();
-        objectBox.addObject(10.5);
-        objectBox.addObject(1);
-        objectBox.addObject(2);
-        objectBox.addObject("Masha");
-        System.out.println("After init:");
-        System.out.println(objectBox.dump());
-        System.out.println("////////////");
-        try {
-            System.out.println(objectBox.splitter(new Integer(2)).toString());
-            System.out.println(objectBox.splitter(new Double(0.5)).toString());
-        } catch (NotNumberException ex) {
-            System.out.println(ex.getMessage());
-        }
     }
 }
