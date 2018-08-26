@@ -22,10 +22,11 @@ public class ObjectBox {
      *
      * @param object объект, который необходимо добавить
      */
-    public void addObject(Object object) {
+    public boolean addObject(Object object) {
         if (object == null || objects.contains(object))
-            return;
-        objects.add(object);
+            return false;
+        return objects.add(object);
+
     }
 
     /**
